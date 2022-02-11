@@ -1,0 +1,68 @@
+﻿@using WordleBlazor.Data
+@inject WordleGameService WordleGameService
+<style>
+    input.word {
+        font-size: 32px;
+        border: 2px solid rgb(86,87,88);
+        padding: 10px;
+        text-align: center;
+        margin: 0px 2px;
+    }
+</style>
+<div class="text-center">
+    <h3>BLAZLE</h3>
+    <hr />
+    <br />
+    <br />
+    <p>Green</p>
+    <input type="text" class="word" @bind="@Green" maxlength="5" />
+
+    <br />
+    <p>Yellow</p>
+    <input type="text" class="word" @bind="@Yellow" maxlength="5" />
+
+
+    <br />
+    <p>Grey</p>
+    <input type="text" class="word" @bind="@Grey" maxlength="25" />
+
+
+    <br />
+    <button @onclick="Guess">Solve</button>
+</div>
+
+
+@if (Guesses == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <tbody>
+            @foreach (var guess in Guesses)
+            {
+                <tr>
+                    <td>@guess</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private string Green { get; set; } = string.Empty;
+    private string Yellow { get; set; } = string.Empty;
+    private string Grey { get; set; } = string.Empty;
+    private List<string> Guesses = new();
+
+    private void Guess()
+    {
+        Guesses = WordleGameService.Guess(Green, Yellow, Grey);
+
+        foreach (var guess in Guesses)
+        {
+            Console.WriteLine(guess);
+        }
+    }
+}
